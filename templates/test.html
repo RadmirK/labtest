@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{%block tests_block%}  
+<ul class=patients>
+	
+	{%for test in tests%}
+    <table border="1">
+		<caption><h2>Общий анализ крови</h2></caption>
+		<tr><th>id</th> <th>{{ test.id }}</th></tr>
+		<tr><th>Дата</th><th>{{ test.testdate }}</th></tr>
+		<tr><th>Пациент</th><th> <a href="{{ url_for('patients_app.show_patient', patient_id = test.patient_id) }}"> {{ test.lName }} </a></th></tr>
+		<tr><th>Гемоглобин</th><th>{{ test.hemoglobin }}</th></tr>
+		<tr><th>Гематокрит</th><th>{{ test.hematocrit }}</th></tr>
+		<tr><th>Количество трамбоцитов</th><th>{{ test.platelet_count }}</th></tr>
+		<tr><th>Количество лейкоцитов</th><th>{{ test.leukocyte_count }}</th></tr>
+		<tr><th>Дополнительная информация</th><th>{{ test.info }}</th></tr>
+	</table>
+	<a href="{{ url_for('tests_app.add_test', patient_id = test.patient_id, edit_test_id = test.id)}}">Редактировать анализ</a> <br>
+	<a href="{{ url_for('tests_app.del_test', patient_id = test.patient_id, test_id = test.id)}}">Удалить анализ</a> <br>
+	{% else %}
+	<li><em>Такого анализа не существует</em>
+	{%endfor%}
+  </ul>
+  
+{%endblock%}
+	

@@ -1,0 +1,86 @@
+   {% extends "layout.html" %}
+   
+{% block tests_block%} 
+ <ul class=tests>
+	{%if tests%}
+    <table border="1">
+		<caption><h2>
+			
+			{%if tests.patient%}
+				Список лабораторных анализов пациента {{ tests[0].lName }}
+			{%else%}
+				Список ВСЕХ лабораторных анализов
+			{%endif%}
+		</h2></caption>
+		<tr>
+			<th>id</th>
+			<th>Дата</th>
+			{%if not patient%}
+			<th>ФИО пациента</th>
+			{%endif%}
+			<th>Гемоглобин</th>
+			<th>Гематокрит</th>
+			<th>Кол-во трамбоцитов</th>
+			<th>Кол-во лейкоцитов</th>
+			<th>Дополнительная информация</th>
+			
+		</tr>
+	{% for test in tests %}
+		<tr>
+			<th><a href="{{ url_for('tests_app.show_patient_tests', patient_id = test.patient_id, test_id= test.id) }}">{{ test.id }}</a></th>
+			<th>{{ test.testdate }}</th>
+			{%if not patient%}
+				<th> <a href="{{ url_for('patients_app.show_patient', patient_id = test.patient_id) }}">{{ test.lName}}</a></th>
+			{%endif%}
+			<th>{{ test.hemoglobin }}</th>
+			<th>{{ test.hematocrit }}</th>
+			<th>{{ test.platelet_count }}</th>
+			<th>{{ test.leukocyte_count }}</th>
+			<th>{{ test.info }}</th>
+		</tr>
+	{% endfor %}
+	</table>
+	{%else%}
+    <li><em>Список анализов пуст</em>
+	{%endif%}
+
+  </ul>
+  
+  {% endblock %}
+  
+  {%if patient%}
+  {%block patient%}
+  
+  
+  
+  {%endblock%}
+  {%endif%}
+
+
+
+
+
+
+
+
+
+{#% block body %}
+  {% if session.logged_in %}
+    <form action="{{ url_for('add_entry') }}" method=post class=add-entry>
+      <dl>
+        <dt>Title:
+        <dd><input type=text size=30 name=title>
+        <dt>Text:
+        <dd><textarea name=text rows=5 cols=40></textarea>
+        <dd><input type=submit value=Share>
+      </dl>
+    </form>
+  {% endif %}
+  <ul class=entries>
+  {% for entry in entries %}
+    <li><h2>{{ entry.title }}</h2>{{ entry.text|safe }}
+  {% else %}
+    <li><em>Unbelievable.  No entries here so far</em>
+  {% endfor %}
+  </ul>
+{% endblock %#}
