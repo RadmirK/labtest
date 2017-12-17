@@ -38,11 +38,13 @@ cursor.executescript("""
 cur = cursor.execute("SELECT * FROM Patients")
 
 rr=cur.fetchall()
-print(type(rr))
-print(rr)
-cursor.execute("DELETE FROM Patients WHERE id = 59")
+#print(type(rr))
+#print(rr)
+p = cursor.execute("DELETE FROM Patients WHERE id = 98")
+print(p.fetchall())
+
 # Если мы не просто читаем, но и вносим изменения в базу данных - необходимо сохранить транзакцию
-#conn.commit()
+conn.commit()
 
 # Либо отменить изменения
 conn.rollback()

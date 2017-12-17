@@ -1,85 +1,123 @@
-from flask import Blueprint, g, request, render_template, flash, session, redirect, url_for
+from flask import Blueprint, g, jsonify, abort, request, render_template, flash, session, redirect, url_for
 from application import get_db
 tests_app = Blueprint('tests_app', __name__, url_prefix='/tests')
 
-@tests_app.before_request
-def before_request():
-	"""Перед каждым запросом проверяет пользователя"""
-	if  hasattr(g, 'username'):
-		if g.username == None:
-			return redirect(url_for('login'))
-			
-@tests_app.route('/')
-def show_list():
-    db = get_db()
-    cur = db.execute("""
-		SELECT OAK_results.*, PATIENTS.lName 
-		FROM OAK_results, Patients 
-		WHERE OAK_results.patient_id = Patients.id""")
-    tests = cur.fetchall()
-    return render_template('show_tests.html', tests=tests, patient = 0)
-
-@tests_app.route('/<int:patient_id>')
-@tests_app.route('/<int:patient_id>/<int:test_id>')
-def show_patient_tests(patient_id, test_id=0):
+@tests_app.route('/', methods = ['GET'])
+@tests_app.route('/<int:test_id>', methods = ['GET'])
+def show_tests(test_id=0):
+	try:
+		patient_id = int(request.args.get('patient_id'))
+	except ValueError:
+		abort(400, "Параметр patient_id введен не верно. Введите целое число")
+	except:
+		patient_id = 0
 	db = get_db()
-	if test_id: #Если необходимо отобразить один анализ
-		cur = db.execute("""
+	select = """
 			SELECT OAK_results.*, PATIENTS.lName 
 			FROM OAK_results, Patients 
-			WHERE patient_id = %d AND OAK_results.patient_id = Patients.id AND OAK_results.id = %d""" % (patient_id, test_id))
-		tests = cur.fetchall()
-		return render_template('test.html', tests = tests)
-	else: #Иначе показать все анализы
-		cur = db.execute("""
-			SELECT OAK_results.*, PATIENTS.lName 
-			FROM OAK_results, Patients 
-			WHERE patient_id = %d AND OAK_results.patient_id = Patients.id""" % patient_id)
-		tests = cur.fetchall()
-		return render_template('show_tests.html', tests = tests, patient=patient_id)
+			WHERE OAK_results.patient_id = Patients.id"""
+		
+	if test_id: #Отобразить данные одного анализа
+		select += " AND OAK_results.id = %d" % test_id
+
+	if patient_id: #Если необходимо отобразить анализы одного пациента
+		select += " AND OAK_results.patient_id = %d" % patient_id
+	cur = db.execute(select)
+	tests = cur.fetchall()
 	
-@tests_app.route('/del_test/<int:patient_id>/<int:test_id>')
-def del_test(patient_id, test_id=0):
-	"""Удаляет один анализ одного пациента"""
-	mes = None 
+	if tests:
+		return jsonify(tests)
+	else:
+		abort(404, "Patient or test not found")
+	
+#@tests_app.route('/', methods = ['DELETE'], defaults={'test_id':0})
+@tests_app.route('/<int:test_id>', methods = ['DELETE'])
+def del_test(test_id = 0):
+	"""Удаляет один анализ"""
+	"""
+	try:
+		patient_id = int(request.args.get('patient_id'))
+	except ValueError:
+		abort(400, "Параметр patient_id введен не верно. Введите целое число")
+	except:
+		patient_id = 0
+	
+	"""
 	db = get_db()
 	if test_id: #Если задан номер анализа, то удаляем один
-		cur = db.execute('DELETE FROM OAK_results WHERE patient_id = %d AND id = %d' % (patient_id, test_id))
-	else: #Иначе удаляем все анализы пациента
-		cur = db.execute('DELETE FROM OAK_results WHERE patient_id = %d AND id = %d' % (patient_id))
-		
-	delete = cur.fetchall()
-	db.commit()
-	if delete:
-		mes = 'Данного пациента либо анализа в базе нет'
+		cur = db.execute('SELECT id FROM OAK_results WHERE id = %d' %test_id)
+		if cur.fetchone(): #Если есть такой, то удаляем
+			cur = db.execute('DELETE FROM OAK_results WHERE id = %d' % test_id)
+		else:
+			abort(404, "Анализы не найдены") 
+		"""
+	elif patient_id: #Иначе удаляем все анализы пациента
+		cur = db.execute('SELECT id FROM Patients WHERE id = %d' % patient_id)
+		if cur.fetchone(): #Если есть такой пациент, то удаляем
+			cur = db.execute('DELETE FROM OAK_results WHERE patient_id = %d AND id = %d' % (patient_id))
+		else:
+			abort(404, "Данный пациент не найден")
+		"""
 	else:
-		mes = 'Данный анализ был удален из базы'
-	return redirect(url_for('patients_app.show_patient', patient_id=patient_id))
-	
-@tests_app.route('/add_test/<int:patient_id>', methods=['GET','POST'])
-@tests_app.route('/add_test/<int:patient_id>/<int:edit_test_id>', methods=['GET','POST'])
-def add_test(patient_id , edit_test_id=0):
-	"""Добавить анализ"""
-	db = get_db()
-	error = None
-	if request.method == 'POST':
-		form_list = ['testdate','hemoglobin','hematocrit', 'platelet_count', 'leukocyte_count', 'info'] #Список имен входных параметров
-		req_form = [request.form[i] for i in form_list] #Значения входных параметров 
-	
-		for r in req_form: 					#Проходим по формам
-			if r != request.form['info']:	#Доп. инфо опционально
-				if not r:	 				#Если остальные не пустые
-					error = 'Заполните все поля (Кроме дополнительной информации)'
-		form_list.append('patient_id')
-		req_form.append(patient_id)
-		if not error:
-			insert = """INSERT into OAK_results (testdate, hemoglobin,hematocrit, platelet_count, leukocyte_count, info, patient_id) values (%r, %r, %r, %r, %r, %r, %r)"""
+		abort(400, "Введите номер анализа для удаления")
+		
+	db.commit()
+	return jsonify(result = True)
 
-			cur = db.execute(insert % tuple(req_form)) #подставляем входные данные в запрос
-			patient = cur.fetchall() 
-			db.commit()
-			return redirect(url_for('tests_app.show_patient_tests', patient_id=patient_id))
+@tests_app.route('/', methods = ['POST'])
+@tests_app.route('/<int:edit_test_id>', methods=['PUT','POST'])
+def add_test(edit_test_id = 0):
+	"""Добавить или редактировать данные анализа"""
 	
-	cur = db.execute('SELECT * FROM OAK_results WHERE id = %d' % edit_test_id)
-	edit_test = cur.fetchone()	
-	return render_template('add_test.html', patient_id=patient_id, test=edit_test, error=error)
+
+	
+	db = get_db()
+	error = ''
+	
+	db_list = ['testdate', 'patient_id', 'hemoglobin','hematocrit', 'platelet_count', 'leukocyte_count', 'info'] #Список всех имен входных параметров
+	form_list = [] #Список имен принятых параметров
+	req_form = [] #Значения входных параметров 
+	update = ''
+	
+	for i in db_list: #Формируем входные формы
+		try:
+			req_form.append(request.form[i])
+			form_list.append(i)
+			update += i + '=%r'+',' #Строка запроса UPDATE
+		except: 
+			if request.method == 'POST':
+				abort(400, "Заполните все поля")
+	if update: update = update[0:-1] #Удаляем лишнюю запятую
+	
+	for r in req_form: 			#Проходим по формам
+		if 'info' == form_list[req_form.index(r)]: continue #Доп. инфо опционально
+		if not r:	 			#Если форма пустая
+			 abort(400,'Заполните все пустые поля (Кроме дополнительной информации)')
+	
+	
+	patient_id = None
+	if 'patient_id' in form_list:
+		try: 
+			patient_id = int(req_form[form_list.index('patient_id')])
+		except: 
+			patient_id = 0
+	
+		cur = db.execute('SELECT id FROM Patients WHERE id = %d' % patient_id)
+		if not cur.fetchone():
+			abort(404, " Данный пациент не найден. Необходимо ввести номер существующего пациента в формате ?edit_patient_id=<int>")
+		
+	if request.method == 'POST':
+		insert = """INSERT into OAK_results (testdate,  patient_id, hemoglobin, hematocrit, platelet_count, leukocyte_count, info) values (%r, %r, %r, %r, %r, %r, %r)"""
+		#подставляем входные данные в запрос
+		cur = db.execute(insert % tuple(req_form)) 
+		
+	if request.method == 'PUT':
+		print(edit_test_id)
+		cur = db.execute('SELECT id FROM OAK_results WHERE id = %d' % edit_test_id)
+		if not cur.fetchone():
+			abort(404, "Laboratory test not found")
+		update = "UPDATE OAK_results SET " + update + "WHERE id = %d" % edit_test_id
+		cur = db.execute(update % tuple (req_form))
+		
+	db.commit()	
+	return jsonify(result=True)
