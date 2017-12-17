@@ -1,0 +1,765 @@
+{
+	"info": {
+		"name": "labtest ",
+		"_postman_id": "ab673137-3a60-aee1-1014-fb79e0d391ef",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Patients",
+			"description": "",
+			"item": [
+				{
+					"name": "Получить список пациентов",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "127.0.0.1:5000/patients",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"patients"
+							]
+						},
+						"description": "Получить список пациентов"
+					},
+					"response": []
+				},
+				{
+					"name": "Получить данные одного пациента",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "127.0.0.1:5000/patients/58",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"patients",
+								"58"
+							]
+						},
+						"description": "Получить список пациентов"
+					},
+					"response": []
+				},
+				{
+					"name": "Получить данные несуществующего пациента",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "127.0.0.1:5000/patients/0",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"patients",
+								"0"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Добавить нового пациента",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "SNILS",
+									"value": "09876543210",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "fName",
+									"value": "Petr",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "lName",
+									"value": "Petrov",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "mName",
+									"value": "Petrovish",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "datebirth",
+									"value": "1999-01-01",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "gender",
+									"value": "1",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "127.0.0.1:5000/patients/",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"patients",
+								""
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Добавить нового пациента c неверными данными",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "SNILS",
+								"value": "09876543210",
+								"disabled": true
+							},
+							{
+								"key": "fName",
+								"value": "Petr",
+								"disabled": true
+							},
+							{
+								"key": "lName",
+								"value": "Petrov",
+								"disabled": true
+							},
+							{
+								"key": "mName",
+								"value": "Petrovich",
+								"disabled": true
+							},
+							{
+								"key": "datebirth",
+								"value": "1992-09-01",
+								"disabled": true
+							},
+							{
+								"key": "gender",
+								"value": "1",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "SNILS",
+									"value": "2312",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "fName",
+									"value": "Petr",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "lName",
+									"value": "Petrov",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "mName",
+									"value": "Petrovish",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "datebirth",
+									"value": "1999-01-01",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "gender",
+									"value": "1",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "127.0.0.1:5000/patients/",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"patients",
+								""
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Удалить пациента",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "127.0.0.1:5000/patients/100",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"patients",
+								"100"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Удалить несуществующего пациента",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "127.0.0.1:5000/patients/0",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"patients",
+								"0"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Редактировать данные пациента",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "SNILS",
+									"value": "09876543212",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "fName",
+									"value": "Petr123",
+									"description": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "lName",
+									"value": "Цуц",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "mName",
+									"value": "Petrovish",
+									"description": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "datebirth",
+									"value": "1999-01-01",
+									"description": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "gender",
+									"value": "1",
+									"description": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "127.0.0.1:5000/patients/58",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"patients",
+								"58"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Редактировать данные несуществующего пациента",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "SNILS",
+									"value": "09876543212",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "fName",
+									"value": "Petr123",
+									"description": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "lName",
+									"value": "Цуц",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "mName",
+									"value": "Petrovish",
+									"description": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "datebirth",
+									"value": "1999-01-01",
+									"description": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "gender",
+									"value": "1",
+									"description": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "127.0.0.1:5000/patients/0",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"patients",
+								"0"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tests",
+			"description": "",
+			"item": [
+				{
+					"name": "Получить список всех анализов",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "127.0.0.1:5000/tests/",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"tests",
+								""
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Получить данные одного анализа",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "127.0.0.1:5000/tests/112",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"tests",
+								"112"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Получить данные несуществующего анализа",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "127.0.0.1:5000/tests/9999",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"tests",
+								"9999"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Получить список анализов одного пациента",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "patient_id",
+								"value": "57"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "127.0.0.1:5000/tests?patient_id=91",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"tests"
+							],
+							"query": [
+								{
+									"key": "patient_id",
+									"value": "91",
+									"equals": true
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Получить данные одного анализа конкретного пациента",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "patient_id",
+								"value": "57"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "127.0.0.1:5000/tests/112?patient_id=91",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"tests",
+								"112"
+							],
+							"query": [
+								{
+									"key": "patient_id",
+									"value": "91",
+									"equals": true
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Изменить данные анализа",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "hematocrit",
+									"value": "13",
+									"description": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "hemoglobin",
+									"value": "14",
+									"description": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "leukocyte_count",
+									"value": "121",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "patient_id",
+									"value": "91",
+									"description": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "platelet_count",
+									"value": "140",
+									"description": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "testdate",
+									"value": "2017-12-12",
+									"description": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "127.0.0.1:5000/tests/112",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"tests",
+								"112"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Добавить новый анализ",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "hematocrit",
+									"value": "13",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "hemoglobin",
+									"value": "14",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "leukocyte_count",
+									"value": "121",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "patient_id",
+									"value": "91",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "platelet_count",
+									"value": "123",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "testdate",
+									"value": "2017-12-12",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "info",
+									"value": "",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "127.0.0.1:5000/tests/",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"tests",
+								""
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Удалить анализ",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "127.0.0.1:5000/tests/137",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"tests",
+								"137"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Index page",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "127.0.0.1:5000/",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						""
+					]
+				},
+				"description": "Index page"
+			},
+			"response": []
+		}
+	]
+}
