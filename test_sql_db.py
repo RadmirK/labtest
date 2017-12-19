@@ -1,45 +1,44 @@
-#Код для тестирования БД и API SQLite
+# Код для тестирования БД и API SQLite
 
 import sqlite3
 
-
-#Соединяемся к БД
+# Соединяемся к БД
 conn = sqlite3.connect('lab_database.db')
 
-#Создаем курсор - специальный объект, который делает запросы и получает их результаты
+# Создаем курсор - специальный объект, который делает запросы и получает их результаты
 cursor = conn.cursor()
 
 # Делаем INSERT запрос к базе данных, используя обычный SQL-синтаксис
 # Позволяет делать лишь один запрос за раз!!!
 # Чтоб использовать несколько запросов можно применять метод executescript()
 cur = cursor.execute("""
-	insert into Patients values (
-		Null, 
-		'12345678900', 
-		'Ivan', 
-		'Ivanov', 
-		'Ivanovich', 
-		'1999-01-01', 
-		'Мужской'
-	) 
+    insert into Patients values (
+        Null, 
+        '12345678900', 
+        'Ivan', 
+        'Ivanov', 
+        'Ivanovich', 
+        '1999-01-01', 
+        'Мужской'
+    ) 
 """)
 cursor.executescript("""
-	INSERT INTO OAK_results VALUES (
-		Null,
-		strftime('2017-12-12'),
-		2,
-		1.4,
-		10,
-		120,
-		140,
-		'Сдох'
-	);
+    INSERT INTO OAK_results VALUES (
+        Null,
+        strftime('2017-12-12'),
+        2,
+        1.4,
+        10,
+        120,
+        140,
+        'Сдох'
+    );
 """)
 cur = cursor.execute("SELECT * FROM Patients")
 
-rr=cur.fetchall()
-#print(type(rr))
-#print(rr)
+rr = cur.fetchall()
+# print(type(rr))
+# print(rr)
 p = cursor.execute("DELETE FROM Patients WHERE id = 98")
 print(p.fetchall())
 
@@ -48,8 +47,6 @@ conn.commit()
 
 # Либо отменить изменения
 conn.rollback()
-
-
 
 """
 # Делаем SELECT запрос к базе данных, используя обычный SQL-синтаксис
@@ -75,9 +72,5 @@ cursor.execute("SELECT * FROM Patients WHERE strftime('%Y', strftime(Patients.da
 print(cursor.fetchall())
 """
 
-
-
-
-
-#Обязательно отключаемся от БД
+# Обязательно отключаемся от БД
 conn.close()
