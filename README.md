@@ -48,5 +48,5 @@ POST | http://[hostname]/tests/ | Добавить новый анализ
 DELETE | http://[hostname]/tests/<test_id> | Удалить один анализ
 
 #### Добавил файл запросов Postman labtest .postman_collection.json
-
+#### 19.12.2017: Refactoring
 
