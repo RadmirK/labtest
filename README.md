@@ -20,7 +20,7 @@ python
 
 ## Процесс выполнения
 
-### 13.12.2017: Выполнен первый набросок
+####  13.12.2017: Выполнен первый набросок
 1. Отображение списка пациентов
 1. Отображение списка лабораторных анализов
 1. Отображение данных пациента
@@ -30,5 +30,23 @@ python
 1. Редактирование данных анализов
 1. Удаление пациента и всех его анализов
 1. Удаление анализа пациента
+
+####  18.12.2017: Переделан под API
+Метод http | URL | Действие
+-----------|------|----------
+GET | http://[hostname]/patients | Получить список пациентов
+GET | http://[hostname]/patients/<patient_id> | Получить данные одного пациента
+POST | http://[hostname]/patients | Добавить нового пациента
+PUT |  http://[hostname]/patients/<patient_id> | Редактировать данные пациента
+DELETE | http://[hostname]/patients/<patient_id> | Удалить пациента
+GET | http://[hostname]/tests/ | Получить список всех анализов
+GET | http://[hostname]/tests/<test_id> | Получить данные одного анализа
+GET | http://[hostname]/tests?patient_id=<patient_id> | Получить список анализов пациента
+GET | http://[hostname]/tests/<test_id>?patient_id=<patient_id> | Получить данные одного анализа 
+PUT | http://[hostname]/tests/<test_id> | Редактировать данные одного анализа
+POST | http://[hostname]/tests/ | Добавить новый анализ
+DELETE | http://[hostname]/tests/<test_id> | Удалить один анализ
+
+#### Добавил файл запросов Postman labtest .postman_collection.json
 
 
